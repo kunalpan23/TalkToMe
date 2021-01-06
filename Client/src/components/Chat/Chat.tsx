@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import queryString from 'query-string';
 import { io } from 'socket.io-client';
+import { Link } from "react-router-dom";
 
 import Messages from '../Messages/Messages';
 
@@ -29,10 +30,9 @@ const Chat = (props:any) => {
             // Callback code for DB entry 
         }); 
 
-        return ():any => { 
-            console.log("Called Return");
-            SOCKET.emit("disconnect");
-            SOCKET.off();
+        return (): any => {
+            /* Disconnects the socket manually */
+            SOCKET.close();
         }
     }, [CONNECTION, props.location.search]);
 
@@ -57,6 +57,9 @@ const Chat = (props:any) => {
                 <div className="chat-box-header">
                     {ROOM}
                 </div>
+                <Link to="/">
+                    X
+                </Link>
                 <div className="chat-box-body">
                     <div className="chat-box-overlay">   
                     </div>
