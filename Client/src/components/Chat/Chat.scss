@@ -115,6 +115,7 @@
 }
 .chat-input > form {
 	margin-bottom: 0;
+	position: relative;
 }
 #chat-input::-webkit-input-placeholder {
 	/* Chrome/Opera/Safari */
@@ -134,8 +135,8 @@
 }
 .chat-submit {
 	position: absolute;
-	bottom: 3px;
-	right: 10px;
+	bottom: 19px;
+	right: 12px;
 	background: transparent;
 	box-shadow: none;
 	border: none;
@@ -143,6 +144,7 @@
 	color: #5a5eb9;
 	width: 35px;
 	height: 35px;
+	cursor: pointer;
 }
 .chat-logs {
 	padding: 15px;
