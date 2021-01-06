@@ -50,7 +50,7 @@ const Chat = (props:any) => {
             SOCKET.emit("sendMessage", message, () => setMessage(''));
         }
     }
-    
+
     return (
         <div className="join__wrap">
             <div className="chat-box">
@@ -61,7 +61,7 @@ const Chat = (props:any) => {
                     <div className="chat-box-overlay">   
                     </div>
                     <div className="chat-logs"> 
-                        <Messages messages={messages} />
+                        <Messages user={NAME} messages={messages} />
                     </div> 
                 </div>
                 <div className="chat-input">      

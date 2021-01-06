@@ -1,18 +1,34 @@
 import React from 'react'
 
-const Messages = ({ messages }: {messages: Array<any>}) => {
+const Messages = ({ messages, user }: {messages: Array<any>, user:String}) => {
     return (
         <>
-            {messages.map(message => (
-            <div id='cm-msg' className="chat-msg">
-                <span className="msg-avatar">
-                    <img src="https://image.crisp.im/avatar/operator/196af8cc-f6ad-4ef7-afd1-c45d5231387c/240/?1483361727745" />
-                </span>
-                <div className="cm-msg-text">
-                    {message.text}
-                </div>
-            </div>
-        ))}
+            {
+                messages.map(message => {
+                    switch (message.user) {
+                        case "admin":
+                            return (<div key={message.text} className="systemText">
+                                <p>{ message.text }</p>
+                            </div>); 
+                        default: 
+                            return (
+                                <div id='cm-msg' key={message.text} className={`chat-msg ${message.user.toLowerCase() == user.toLowerCase() && "self"}`}> 
+                                    <div className="cm-msg-text">
+                                        {
+                                            message.user.toLowerCase() !== user.toLowerCase() && (<span className="msg-avatar"> 
+                                            {message.user[0].toUpperCase() + message.user.substr(1).toLowerCase()}
+                                        </span>)
+                                            
+                                        }
+                                        <span className="msg-text">
+                                            {message.text}
+                                        </span>
+                                    </div>
+                                </div>
+                            )
+                    }
+                })
+            }
         </>
     )
 }
