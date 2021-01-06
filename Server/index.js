@@ -1,6 +1,6 @@
-const { Socket } = require('dgram');
 const express = require('express');
 const http = require('http');
+const cors = require('cors');
 const socketIO = require('socket.io');
 
 const app = express();
@@ -9,7 +9,7 @@ const io = socketIO(server);
 
 const PORT = process.env.PORT || 5000;
 
-const { addUser, getUser } = require('./Users');
+const { addUser, getUser, removeUser } = require('./Users');
 
 io.on('connection', (socket) => {
 	console.log('User Connected');
@@ -20,7 +20,7 @@ io.on('connection', (socket) => {
 			name: data.name,
 			room: data.room
 		});
-
+		console.log('User Added with Id', socket.id);
 		if (error) {
 			return callback(error);
 		}
@@ -39,19 +39,22 @@ io.on('connection', (socket) => {
 		callback();
 	});
 
-	socket.on('userMessage', (message, callback) => {
-		const user = getUser(socket.id);
-		io.to(user.room).emit('message', { user: user.name, text: message });
-
-		callback();
+	socket.on('sendMessage', (mgs, callback) => {
+		const user = getUser(socket.id) || {};
+		if (Object.keys(user).length) {
+			io.to(user.room).emit('message', { user: user.name, text: mgs });
+			callback();
+		}
 	});
 
 	socket.on('disconnect', () => {
 		console.log('User Disconnected');
+		removeUser(socket.id);
 	});
 });
 
 app.use(require('./router'));
+// app.use(cors());
 
 server.listen(PORT, () => {
 	console.log(`Server is running on Port ${PORT}`);
